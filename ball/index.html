@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ball Animation</title>
+</head>
+<body>
+    <div style="position: absolute; width: 50px;height: 50px; background: blue;border-radius: 50%;" id="div"></div>
+    <script src="index.js"></script>
+    <script>
+        const div = document.getElementById('div');
+        const animate = new Animate(div);
+        animate.start('left', 1000, 1000, 'sineaseIn');
+    </script>
+</body>
+</html>

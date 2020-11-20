@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>行走的小姑娘</title>
+    <style>
+        canvas {
+            display: block;
+			margin: 100px auto;	
+			border:1px dashed #ccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="600" height="400"></canvas>
+    <script>
+        function Person () {
+            this.ctx = document.querySelector('canvas').getContext('2d');
+            this.src = 'girl.png';
+            this.canvasWidth = this.ctx.canvas.width;
+            this.canvasHeight = this.ctx.canvas.height;
+
+            this.stepSize = 10; // 步伐大小
+            this.direction = 0; // 前0,左1,右2,后3
+            this.stepY = 0;
+            this.stepX = 0;
+            this.lastDirection = 0;
+            this.init();
+        }
+        Person.prototype.init = function () {
+            this.loadImage((image) => {
+                this.imageWidth = image.width;
+                this.imageHeight = image.height;
+                this.personWidth = image.width / 4;
+                this.personHeight = image.height / 4;
+                this.x0 = this.canvasWidth / 2 - this.personWidth;
+                this.y0 = this.canvasHeight / 2 - this.personHeight;
+                this.ctx.drawImage(image, 0, 0, this.personWidth, this.personHeight, this.x0, this.y0, this.personWidth, this.personHeight);
+                this.index = 0;
+                document.onkeydown = (e) => {
+                    const eCode = e.keyCode;
+                    if (eCode === 40) {
+                        this.direction = 0;
+                        this.drawImages(image);
+                    } else if (eCode === 37) {
+                        this.direction = 1;
+                        this.drawImages(image);
+                    } else if (eCode === 39) {
+                        this.direction = 2;
+                        this.drawImages(image);
+                    } else if (eCode === 38){
+                        this.direction = 3;
+                        this.drawImages(image);
+                    }
+                }
+            });
+        }
+        Person.prototype.loadImage = function (cb) {
+            const image = new Image();
+            image.onload = () => {
+                cb && cb(image);
+            };
+            image.src = this.src;
+        }
+        Person.prototype.drawImages = function (image) {
+            const xAxis = this.x0 + this.stepX * 10;
+            const yAxis = this.y0 + this.stepY * 10;
+            if (this.lastDirection === this.direction && (xAxis < 0 || (xAxis + this.personWidth) > this.canvasWidth || yAxis < 0 || (yAxis + this.personHeight) > this.canvasHeight)) {
+                switch(this.direction) {
+                    case 0:
+                        this.stepY--;
+                        break;
+                    case 1:
+                        this.stepX++;
+                        break;
+                    case 2:
+                        this.stepX--;
+                        break;
+                    case 3:
+                        this.stepY++;
+                        break;
+                }
+                alert('Oops, you almost hit the wall!')
+                return;
+            }
+            switch(this.direction) {
+                case 0:
+                    this.stepY++;
+                    break;
+                case 1:
+                    this.stepX--;
+                    break;
+                case 2:
+                    this.stepX++;
+                    break;
+                case 3:
+                    this.stepY--;
+                    break;
+            }
+            this.index++;
+            this.lastDirection = this.direction;
+            this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);        
+            this.ctx.drawImage(image, this.index * this.personWidth, this.direction * this.personHeight, this.personWidth, this.personHeight, xAxis, yAxis, this.personWidth, this.personHeight);
+            if (this.index >= 3) {
+                this.index = 0;
+            }
+        }
+        new Person();
+    </script>
+</body>
+</html>
