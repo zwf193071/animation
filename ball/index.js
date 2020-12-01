@@ -33,11 +33,11 @@ const Animate = function (dom) {
     this.easing = null;
     this.duration = null;
 };
-Animate.prototype.start = function (propertyName, endPos, duration, easing) {
+Animate.prototype.start = function (propertyName, duration, easing, endPos) {
     this.startTime = +new Date;
     this.startPos = this.dom.getBoundingClientRect()[propertyName];
     this.propertyName = propertyName;
-    this.endPos = endPos;
+    this.endPos = endPos ? endPos : this.startPos + 200;
     this.duration = duration;
     this.easing = tween[easing];
 

@@ -7,12 +7,45 @@
     <title>Ball Animation</title>
 </head>
 <body>
-    <div style="position: absolute; width: 50px;height: 50px; background: blue;border-radius: 50%;" id="div"></div>
+    <div style="margin-bottom:20px;">
+        <div style="float:left;margin-right:40px;">
+            <h2>请选择方向:</h2>
+            <select id="direction" onchange="startToMove()">
+                <option value="left">left</option>
+                <option value="top">top</option>
+            </select>
+        </div>
+        <div style="float:left;">
+            <h2>请选择动画效果:</h2>
+            <select name="" id="animation" onchange="startToMove()">
+                    <option value="linear">linear</option>
+                    <option value="easeIn">easeIn</option>
+                    <option value="strongEaseIn">strongEaseIn</option>
+                    <option value="strongEaseOut">strongEaseOut</option>
+                    <option value="sineaseIn">sineaseIn</option>
+                    <option value="sineaseOut">sineaseOut</option>
+            </select>
+        </div>    
+        <div style="clear:both"></div>
+    </div>
+    
+    <div style="position: absolute; left: 100px; top: 100px; width: 50px;height: 50px; background: blue;border-radius: 50%;" id="div"></div>
     <script src="index.js"></script>
     <script>
         const div = document.getElementById('div');
-        const animate = new Animate(div);
-        animate.start('left', 1000, 1000, 'sineaseIn');
+        const ball = new Animate(div);
+        function getVal(targetId) {
+            const target = document.getElementById(targetId);
+            const index = target.selectedIndex;
+            return target.options[index].value;
+        }
+        function startToMove() {
+            const direction = getVal('direction');
+            const animation = getVal('animation');
+            const style = document.getElementById('direction')
+            ball.start(direction, 1000, animation);
+        }
+        startToMove();
     </script>
 </body>
 </html>
