@@ -1,5 +1,6 @@
 ## 各种动画效果集合
     
+演示地址：[首页导航](https://zwf193071.github.io/animation/)
 
 - 小球左右上下运动,动画效果有六种:
 1. linear; 
